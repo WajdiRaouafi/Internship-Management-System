@@ -10,6 +10,8 @@ services:
       - "3306:3306"
     volumes:
       - db_data2:/var/lib/mysql
+    networks:
+      - ims-network
 
   app:
     image: ims:latest
@@ -22,12 +24,20 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Internship-Management-System?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - ims-network
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8081:8080
+    networks:
+      - ims-network
+
+networks:
+  ims-network:
+    driver: bridge
 
 volumes:
   db_data2:
