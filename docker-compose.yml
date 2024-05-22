@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data2:/var/lib/mysql
     networks:
-      - ims-network
+      - ims-network2
 
   app:
     image: ims:latest
@@ -25,7 +25,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
     networks:
-      - ims-network
+      - ims-network2
 
   adminer:
     image: adminer
@@ -33,10 +33,10 @@ services:
     ports:
       - 8081:8080
     networks:
-      - ims-network
+      - ims-network2
 
 networks:
-  ims-network:
+  ims-network2:
     driver: bridge
 
 volumes:
