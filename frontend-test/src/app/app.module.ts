@@ -11,6 +11,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
+import { OffreComponent } from './offre/offre.component';
+import { CandidatureComponent } from './candidature/candidature.component';
 
 
 export function tokenGetter() {
@@ -22,7 +24,9 @@ export function tokenGetter() {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    OffreComponent,
+    CandidatureComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,5 @@
 package com.gestion.stage.controllers;
 
-
 import com.gestion.stage.models.Candidature;
 import com.gestion.stage.models.EmailDetails;
 import com.gestion.stage.models.Offres;
