@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = 'wajdiraouafi/ims'
         DOCKER_TAG = 'latest' // You can change this to your desired tag
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // The ID of your Docker credentials in Jenkins
-        DB_HOST = 'mysql'
+        DB_HOST = 'mysql' // DATABASE   
         DB_PORT = '3306'
         DB_NAME = 'Internship-Management-System'
         DB_USER = 'root'
