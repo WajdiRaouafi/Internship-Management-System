@@ -14,7 +14,7 @@ services:
       - ims-network2
 
   app:
-    image: ims:latest
+    image: wajdiraouafi/ims:latest
     container_name: internship_management_app
     ports:
       - "8090:8085"
