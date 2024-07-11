@@ -30,39 +30,7 @@ import java.util.List;
          @Autowired
          private EmailServiceImp emailService;
 
-//            @PreAuthorize( "hasRole('RH')")
-//        @PostMapping("/save/{idST}/{idOff}")
-//        public Candidature saveCandidateur(@RequestBody Candidature candidature, @PathVariable Long idST, @PathVariable Long idOff) {
-//            User m1= userDetailsServiceImpl.getUserByID(idST);
-//            Offres m2 =offresServiceImp.getOffreByID(idOff);
-//            candidature.setUser(m1);
-//            candidature.setOffres(m2);
-//            return candidatureServiceImp.createCandidature(candidature);
-//        }
-//        @PostMapping("/save/{idST}/{idOff}")
-//        public Candidature saveCandidateur(@RequestBody Candidature candidature, @PathVariable Long idST, @PathVariable Long idOff) {
-//            User m1= userDetailsServiceImpl.getUserByID(idST);
-//            Offres m2 =offresServiceImp.getOffreByID(idOff);
-//            candidature.setUser(m1);
-//            candidature.setOffres(m2);
-//            Candidature savedCandidature = candidatureServiceImp.createCandidature(candidature);
-//            // Send email notification to the candidate
-//            String candidateEmail = m1.getEmail();
-//            String offerName = m2.getIntitule();
-//            sendEmailNotification(candidateEmail, offerName);
-//            return savedCandidature;
-//        }
-//    private void sendEmailNotification(String recipientEmail, String offerName) {
-//
-//        EmailDetails emailDetails = new EmailDetails();
-//        emailDetails.setRecipient(recipientEmail);
-//        emailDetails.setSubject("Candidature Confirmation");
-//        emailDetails.setMsgBody("Dear candidate,\n\nYou have successfully submitted your candidature for the offer: " + offerName + ".\n\nBest regards,\nThe Management Team");
-//        emailService.sendSimpleMail(emailDetails);
-//    }
-
-    //    @PreAuthorize( "hasRole('RH')")
-    @PostMapping("/save/{idST}/{idOff}")
+@PostMapping("/save/{idST}/{idOff}")
     public ResponseEntity<String> saveCandidature(@RequestBody Candidature candidature, @PathVariable Long idST, @PathVariable Long idOff) {
         User user = userDetailsServiceImpl.getUserByID(idST);
         Offres offre = offresServiceImp.getOffreByID(idOff);
@@ -200,3 +168,37 @@ import java.util.List;
 
 
 }
+
+//            @PreAuthorize( "hasRole('RH')")
+//        @PostMapping("/save/{idST}/{idOff}")
+//        public Candidature saveCandidateur(@RequestBody Candidature candidature, @PathVariable Long idST, @PathVariable Long idOff) {
+//            User m1= userDetailsServiceImpl.getUserByID(idST);
+//            Offres m2 =offresServiceImp.getOffreByID(idOff);
+//            candidature.setUser(m1);
+//            candidature.setOffres(m2);
+//            return candidatureServiceImp.createCandidature(candidature);
+//        }
+//        @PostMapping("/save/{idST}/{idOff}")
+//        public Candidature saveCandidateur(@RequestBody Candidature candidature, @PathVariable Long idST, @PathVariable Long idOff) {
+//            User m1= userDetailsServiceImpl.getUserByID(idST);
+//            Offres m2 =offresServiceImp.getOffreByID(idOff);
+//            candidature.setUser(m1);
+//            candidature.setOffres(m2);
+//            Candidature savedCandidature = candidatureServiceImp.createCandidature(candidature);
+//            // Send email notification to the candidate
+//            String candidateEmail = m1.getEmail();
+//            String offerName = m2.getIntitule();
+//            sendEmailNotification(candidateEmail, offerName);
+//            return savedCandidature;
+//        }
+//    private void sendEmailNotification(String recipientEmail, String offerName) {
+//
+//        EmailDetails emailDetails = new EmailDetails();
+//        emailDetails.setRecipient(recipientEmail);
+//        emailDetails.setSubject("Candidature Confirmation");
+//        emailDetails.setMsgBody("Dear candidate,\n\nYou have successfully submitted your candidature for the offer: " + offerName + ".\n\nBest regards,\nThe Management Team");
+//        emailService.sendSimpleMail(emailDetails);
+//    }
+
+    //    @PreAuthorize( "hasRole('RH')")
+    

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 const API_URL = 'http://localhost:8085/api/auth/';
 
@@ -9,18 +9,26 @@ const API_URL = 'http://localhost:8085/api/auth/';
   providedIn: 'root'
 })
 export class AuthService {
+  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: HttpClient) { }
 
+  get isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
+
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
   login(credentials: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const httpOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    };
-    return this.http.post<any>(`${API_URL}signin`, credentials, httpOptions).pipe(
+    return this.http.post<any>(`${API_URL}signin`, credentials).pipe(
+      tap(response => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          this.loggedIn.next(true);
+        }
+      }),
       catchError(this.handleError)
     );
   }
@@ -31,16 +39,26 @@ export class AuthService {
     );
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+    this.loggedIn.next(false);
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Something bad happened; please try again later.';
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
       errorMessage = `An error occurred: ${error.error.message}`;
-    } else {
+    } else if (error.error && error.error.message) {
       console.error(
         `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-      errorMessage = `Backend returned code ${error.status}, message was: ${error.error.message || errorMessage}`;
+        `body was: ${error.error.message}`
+      );
+      errorMessage = error.error.message;
+    } else {
+      console.error(
+        `Backend returned code ${error.status}`
+      );
     }
     return throwError(errorMessage);
   }

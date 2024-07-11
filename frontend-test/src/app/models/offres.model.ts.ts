@@ -1,0 +1,11 @@
+export interface Offres {
+  id: number;
+  intitule: string;
+  description: string;
+  dateDebut: Date;
+  dateFin: Date;
+  nb_stagiaires: number;
+  nivEtude: string;
+  typeStage: string;
+  etatStage: string;
+}
