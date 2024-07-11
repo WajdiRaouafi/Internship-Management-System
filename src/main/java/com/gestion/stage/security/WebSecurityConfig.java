@@ -82,37 +82,54 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //
 //		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //	}
+ @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/Offre/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+
 //@Bean
-//    public WebMvcConfigurer corsConfigurer() {
+//    public WebMvcConfigurer corsConfig() {
 //        return new WebMvcConfigurer() {
 //            @Override
 //            public void addCorsMappings(CorsRegistry registry) {
 //                registry.addMapping("/**")
-//                        .allowedOriginPatterns("http://localhost:4200")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowedHeaders("*")
-//                        .allowCredentials(true);
+//                        .allowedOrigins("http://localhost:4200")
+//                        .allowedMethods(HttpMethod.GET.name(),
+//                                HttpMethod.POST.name(),
+//                                HttpMethod.DELETE.name())
+//                        .allowedHeaders(HttpHeaders.CONTENT_TYPE,
+//                                HttpHeaders.AUTHORIZATION);
 //            }
 //        };
 //    }
 
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/auth/signin").permitAll()
-                .requestMatchers("/api/test/**").permitAll()
-                .requestMatchers("/api/auth/register").permitAll()
-                .anyRequest().authenticated();
+     @Bean
+     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+         http.cors().and().csrf().disable()
+                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                 .authorizeRequests().requestMatchers("/api/**").permitAll()
+                 .requestMatchers("/api/auth/signin").permitAll()
+                 .requestMatchers("/api/**").permitAll()
+                 .requestMatchers("/api/auth/signin").permitAll()
+                 .requestMatchers("/api/test/**").permitAll()
+                 .requestMatchers("/api/auth/register").permitAll()
+                 .anyRequest().authenticated();
 
-        http.authenticationProvider(authenticationProvider());
+         http.authenticationProvider(authenticationProvider());
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+         return http.build();
+     }
 }
