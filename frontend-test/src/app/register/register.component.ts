@@ -12,10 +12,10 @@ export class RegisterComponent {
     username: '',
     email: '',
     password: '',
-    role: '' // Updated to an empty string for initial state
+    role: ''
   };
   errorMessage: string = '';
-  roles: string[] = ['ST', 'RH']; // Example roles
+  roles: string[] = ['ST', 'RH'];
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -25,12 +25,16 @@ export class RegisterComponent {
       return;
     }
 
-    // Create user object with role as an array
+    if (this.form.password.length < 6 || this.form.password.length > 40) {
+      this.errorMessage = 'Password must be between 6 and 40 characters';
+      return;
+    }
+
     const user = {
       username: this.form.username,
       email: this.form.email,
       password: this.form.password,
-      role: [this.form.role] // Send as an array
+      role: [this.form.role]
     };
 
     this.authService.register(user).subscribe(

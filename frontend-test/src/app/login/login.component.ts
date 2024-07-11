@@ -28,8 +28,8 @@ export class LoginComponent {
         this.router.navigate(['home']);
       },
       err => {
-        this.errorMessage = 'Invalid username or password';
-        console.log(err);
+        this.errorMessage = err.error.message || 'Invalid username or password';
+        console.error(err);
       }
     );
   }
