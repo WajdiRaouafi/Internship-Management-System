@@ -7,6 +7,7 @@ import java.util.Date;
 @Entity
 @Data
 public class Candidature {
+    // @Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
