@@ -83,18 +83,25 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //	}
  @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/Offre/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
+public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/api/Offre/**")
+                    .allowedOrigins("http://localhost:4200")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
+            
+            registry.addMapping("/api/Candidature/**")
+                    .allowedOrigins("http://localhost:4200")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
+        }
+    };
+}
+
 
 //@Bean
 //    public WebMvcConfigurer corsConfig() {

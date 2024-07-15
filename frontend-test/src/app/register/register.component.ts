@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast/toast.service'; // Import ToastService
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,11 @@ export class RegisterComponent {
   errorMessage: string = '';
   roles: string[] = ['ST', 'RH'];
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastService: ToastService // Inject ToastService
+  ) { }
 
   onSubmit(): void {
     if (!this.form.username || !this.form.email || !this.form.password || !this.form.role) {
@@ -38,7 +43,8 @@ export class RegisterComponent {
     };
 
     this.authService.register(user).subscribe(
-      () => {
+      (response) => {
+        this.toastService.show('User registered successfully!'); // Show success message
         this.router.navigate(['login']);
       },
       err => {

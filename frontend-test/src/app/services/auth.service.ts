@@ -13,9 +13,18 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  getUserRole(): string {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('Stored User:', user); // Debugging statement
+    return user.roles ? user.roles[0] : ''; // Adjust according to your user object structure
+  }
+
   get isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
+
+
+ 
 
   private hasToken(): boolean {
     return !!localStorage.getItem('token');
@@ -24,24 +33,49 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post<any>(`${API_URL}signin`, credentials).pipe(
       tap(response => {
-        if (response && response.token) {
-          localStorage.setItem('token', response.token);
+        console.log('API Response:', response); // Debugging statement
+        if (response && response.accessToken) {
+          localStorage.setItem('token', response.accessToken);
+          const user = {
+            id: response.id,
+            username: response.username,
+            email: response.email,
+            roles: response.roles
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          
           this.loggedIn.next(true);
+          
+        }
+      }),
+      catchError(this.handleError)
+    );
+    
+  }
+
+  register(user: any): Observable<any> {
+    return this.http.post<any>(`${API_URL}signup`, user).pipe(
+      tap(response => {
+        console.log('API Response:', response); // Debugging statement
+        if (response && response.accessToken) {
+          const user = {
+            id: response.id,
+            username: response.username,
+            email: response.email,
+            roles: response.roles
+          };
+          localStorage.setItem('user', JSON.stringify(user));
         }
       }),
       catchError(this.handleError)
     );
   }
 
-  register(user: any): Observable<any> {
-    return this.http.post<any>(`${API_URL}signup`, user).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); // Optional: clear user info if stored
     this.loggedIn.next(false);
+    console.log('Logged out'); // Debugging statement
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -62,4 +96,9 @@ export class AuthService {
     }
     return throwError(errorMessage);
   }
-}
+  getCurrentUserId(): number {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.id || 0; // Return user ID or 0 if not found
+  }
+  }
+

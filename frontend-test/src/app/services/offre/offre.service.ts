@@ -30,4 +30,8 @@ export class OffresService {
   deleteOffre(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
+  getCurrecntOffre(): number {
+    const offre = JSON.parse(localStorage.getItem('offre') || '{}');
+    return offre.id || 0; // Return offre ID or 0 if not found
+  }
 }

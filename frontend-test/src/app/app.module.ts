@@ -15,6 +15,11 @@ import { OffresListComponent } from './offres/offres-list/offres-list.component'
 import { OffreUpdateComponent } from './offres/offre-update/offre-update.component';
 import { OffreCreateComponent } from './offres/offre-create/offre-create.component';
 import { OffreDetailComponent } from './offres/offres-detail/offres-detail.component'; // Ensure this import
+import { CandidatureCreateComponent } from './candidature/candidature-create/candidature-create.component';
+import { CandidatureDetailComponent } from './candidature/candidature-detail/candidature-detail.component';
+import { CandidatureListComponent } from './candidature/candidature-list/candidature-list.component';
+import { CandidatureUpdateComponent } from './candidature/candidature-update/candidature-update.component';
+import { ToastComponent } from './toast/toast.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -30,7 +35,12 @@ export function tokenGetter() {
     OffresListComponent,
     OffreUpdateComponent,
     OffreCreateComponent,
-    OffreDetailComponent // Ensure this declaration
+    OffreDetailComponent, // Ensure this declaration
+    CandidatureCreateComponent,
+    CandidatureDetailComponent,
+    CandidatureListComponent,
+    CandidatureUpdateComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,4 @@
 package com.gestion.stage.controllers;
-
 import com.gestion.stage.models.Candidature;
 import com.gestion.stage.models.EmailDetails;
 import com.gestion.stage.models.Offres;
@@ -161,12 +160,6 @@ import java.util.List;
 
         return ResponseEntity.status(HttpStatus.OK).body("Candidature refusée et email envoyé.");
     }
-
-
-
-
-
-
 }
 
 //            @PreAuthorize( "hasRole('RH')")
