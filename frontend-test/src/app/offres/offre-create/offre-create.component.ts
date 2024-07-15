@@ -7,7 +7,7 @@ import { Offres } from '../../models/offres.model.ts';
   templateUrl: './offre-create.component.html',
   styleUrls: ['./offre-create.component.css']
 })
-export class OffreCreateComponent {
+export class OffreCreateComponent  {
   offre: Offres = {
     id: 0,
     intitule: '',
@@ -17,8 +17,10 @@ export class OffreCreateComponent {
     nb_stagiaires: 0,
     nivEtude: '',
     typeStage: '',
-    etatStage: ''
+    etatStage: '',
+    candidatures: [] // Ensure candidatures is included
   };
+
 
   constructor(
     private offresService: OffresService,

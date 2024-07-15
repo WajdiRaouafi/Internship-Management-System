@@ -18,9 +18,9 @@ export class OffreUpdateComponent implements OnInit {
     nb_stagiaires: 0,
     nivEtude: '',
     typeStage: '',
-    etatStage: ''
+    etatStage: '',
+    candidatures: [] // Ensure candidatures is included
   };
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,

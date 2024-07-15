@@ -1,5 +1,5 @@
 export interface Candidature {
-  id?: number; // Remove the optional modifier
+  id: number;
   nivEtude: string;
   etablissement: string;
   specialite: string;
@@ -9,8 +9,8 @@ export interface Candidature {
     username: string;
     email: string;
   };
-  offres: {
+  offres?: {
     id: number;
     intitule: string;
-  } | null;
+  }; // Make offres optional if it is not always present
 }

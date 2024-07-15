@@ -1,3 +1,5 @@
+import { Candidature } from './candidature.model'; // Ensure this path is correct
+
 export interface Offres {
   id: number;
   intitule: string;
@@ -8,4 +10,5 @@ export interface Offres {
   nivEtude: string;
   typeStage: string;
   etatStage: string;
+  candidatures: Candidature[]; // This should be correctly typed
 }

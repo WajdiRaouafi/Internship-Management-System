@@ -6,8 +6,6 @@ import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast/toast.service'; // Add this import if using ToastService
 import { ResponseMessage } from '../../models/ApiResponse.model';
 
-
-
 @Component({
   selector: 'app-candidature-create',
   templateUrl: './candidature-create.component.html',
@@ -15,6 +13,7 @@ import { ResponseMessage } from '../../models/ApiResponse.model';
 })
 export class CandidatureCreateComponent implements OnInit {
   candidature: Candidature = {
+    id: 0, // Add this line
     nivEtude: '',
     etablissement: '',
     specialite: '',
@@ -27,7 +26,7 @@ export class CandidatureCreateComponent implements OnInit {
     offres: {
       id: 0,
       intitule: ''
-    }
+    } // Add offres property if needed
   };
 
   userId: number = 0;
@@ -84,73 +83,3 @@ export class CandidatureCreateComponent implements OnInit {
     this.router.navigate(['/candidatures']);
   }
 }
-
-
-  // onSubmit() {
-  //   if (!this.authService.isLoggedIn) {
-  //     this.message = 'Vous devez vous connecter pour soumettre une candidature.';
-  //     this.toastService.show(this.message);
-  //     return; // Stop the submission process
-  //   }
-  
-  //   this.candidature.user.id = this.userId;
-    
-  //   this.candidatureService.createCandidature(this.candidature, this.userId, this.offreId).subscribe(
-  //     () => {
-  //       // On success
-  //       this.message = 'Candidature soumise avec succès !';
-  //       this.toastService.show(this.message);
-  //       this.goToCandidatureList();
-  //     },
-  //     error => {
-  //       // Handle the error response
-  //       let errorMessage = 'Erreur lors de la création de la candidature.';
-  //       if (error.status === 409) { // Already submitted
-  //         errorMessage = 'Vous avez déjà postulé pour cette offre.';
-  //       } else if (error.error && typeof error.error === 'string') {
-  //         errorMessage = error.error; // If the server returns a string message
-  //       }
-  
-  //       this.message = errorMessage;
-  //       this.toastService.show(this.message);
-  //     }
-  //   );
-  // }
-
-  // onSubmit() {
-  //   if (!this.authService.isLoggedIn) {
-  //     this.message = 'Vous devez vous connecter pour soumettre une candidature.';
-  //     this.toastService.show(this.message);
-  //     return; // Stop the submission process
-  //   }
-  
-  //   this.candidature.user.id = this.userId;
-  
-  //   this.candidatureService.createCandidature(this.candidature, this.userId, this.offreId).subscribe(
-  //     (response: ResponseMessage) => {
-  //       console.log('Submission response:', response);
-  //       this.message = response?.message || 'Candidature soumise avec succès !';
-  //       this.toastService.show(this.message);
-  //       this.goToCandidatureList();
-  //     },
-  //     (error) => {
-  //       console.error('Submission error:', error);
-        
-  //       let errorMessage = 'Erreur lors de la création de la candidature.';
-  //       if (error.status === 409) {
-  //         errorMessage = 'Vous avez déjà postulé pour cette offre.';
-  //       } else if (error.error && typeof error.error === 'string') {
-  //         errorMessage = error.error; // If the server returns a string message
-  //       } else if (error.text) {
-  //         errorMessage = error.text; // Capture the text from the error if available
-  //       }
-  
-  //       // Show the detailed error message on the toast
-  //       this.message = `Submission error: ${errorMessage}`;
-  //       this.toastService.show(this.message); // Show the toast with the detailed message
-  //     }
-  //   );
-  // }
- 
-
-

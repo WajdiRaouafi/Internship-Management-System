@@ -20,6 +20,7 @@ import { CandidatureDetailComponent } from './candidature/candidature-detail/can
 import { CandidatureListComponent } from './candidature/candidature-list/candidature-list.component';
 import { CandidatureUpdateComponent } from './candidature/candidature-update/candidature-update.component';
 import { ToastComponent } from './toast/toast.component';
+import { ShowCandidatComponent } from './offres/show-candidat/show-candidat.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -41,6 +42,7 @@ export function tokenGetter() {
     CandidatureListComponent,
     CandidatureUpdateComponent,
     ToastComponent,
+    ShowCandidatComponent,
   ],
   imports: [
     BrowserModule,

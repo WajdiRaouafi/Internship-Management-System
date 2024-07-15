@@ -5,6 +5,7 @@ import { Candidature } from '../../models/candidature.model';
 import { catchError, map } from 'rxjs/operators';
 import { ToastService } from '../toast/toast.service';
 import { ResponseMessage } from '../../models/ApiResponse.model';
+import { Offres } from '../../models/offres.model.ts';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,15 @@ export class CandidatureService {
 
   deleteCandidature(id: number): Observable<Object> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`);
+  }
+  acceptCandidature(id: number): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(`${this.baseUrl}/accept/${id}`, {});
+  }
+
+  refuseCandidature(id: number): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(`${this.baseUrl}/refuse/${id}`, {});
+  }
+  getCandidaturesByOffre(offreId: number): Observable<Offres> {
+    return this.http.get<Offres>(`${this.baseUrl}/offres/${offreId}/candidatures`);
   }
 }

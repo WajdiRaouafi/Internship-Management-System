@@ -11,10 +11,11 @@ import { Candidature } from '../../models/candidature.model';
 export class CandidatureUpdateComponent implements OnInit {
   id!: number; // Use definite assignment assertion
   candidature: Candidature = {
+    id: 0, // Ensure id is included
     nivEtude: '',
     etablissement: '',
     specialite: '',
-    etatCandidature: '',
+    etatCandidature: 'En attente',
     user: {
       id: 0,
       username: '',
@@ -23,10 +24,14 @@ export class CandidatureUpdateComponent implements OnInit {
     offres: {
       id: 0,
       intitule: ''
-    }
+    } // Ensure offres is included if needed
   };
 
-  constructor(private candidatureService: CandidatureService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private candidatureService: CandidatureService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];

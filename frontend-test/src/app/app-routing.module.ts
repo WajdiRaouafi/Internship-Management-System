@@ -11,6 +11,7 @@ import { CandidatureUpdateComponent } from './candidature/candidature-update/can
 import { CandidatureListComponent } from './candidature/candidature-list/candidature-list.component';
 import { CandidatureDetailComponent } from './candidature/candidature-detail/candidature-detail.component';
 import { CandidatureCreateComponent } from './candidature/candidature-create/candidature-create.component';
+import { ShowCandidatComponent } from './offres/show-candidat/show-candidat.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'offre/:id', component: OffreDetailComponent },
   { path: 'create-offre', component: OffreCreateComponent },
   { path: 'update-offre/:id', component: OffreUpdateComponent },
+  { path: 'show-candidat/:id', component: ShowCandidatComponent },
   { path: 'candidatures', component: CandidatureListComponent },
   { path: 'candidature/:id', component: CandidatureDetailComponent },
   { path: 'create-candidature', component: CandidatureCreateComponent },
