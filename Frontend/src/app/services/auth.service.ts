@@ -76,6 +76,8 @@ export class AuthService {
     localStorage.removeItem('user'); // Optional: clear user info if stored
     this.loggedIn.next(false);
     console.log('Logged out'); // Debugging statement
+    location.reload();
+    
   }
 
   private handleError(error: HttpErrorResponse) {
