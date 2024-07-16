@@ -17,7 +17,7 @@ services:
     image: wajdiraouafi/ims:latest
     container_name: internship_management_app
     ports:
-      - "8090:8085"
+      - "8085:8085"
     depends_on:
       - mysql
     environment:
@@ -32,6 +32,16 @@ services:
     restart: always
     ports:
       - 8081:8080
+    networks:
+      - ims-network2
+    
+  frontend:
+    image: frontend/ims
+    container_name: internship_management_frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - app
     networks:
       - ims-network2
 

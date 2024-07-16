@@ -1,5 +1,4 @@
 package com.gestion.stage.security;
-
 import com.gestion.stage.security.jwt.AuthEntryPointJwt;
 import com.gestion.stage.security.jwt.AuthTokenFilter;
 import com.gestion.stage.security.services.UserDetailsServiceImpl;
@@ -29,48 +28,126 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+@Autowired
+UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+@Autowired
+private AuthEntryPointJwt unauthorizedHandler;
 
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+@Bean
+public AuthTokenFilter authenticationJwtTokenFilter() {
+    return new AuthTokenFilter();
+}
+
+@Bean
+public DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
+}
+
+@Bean
+public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    return authConfig.getAuthenticationManager();
+}
+
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+@Bean   //temchi backend 
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/auth/signin").permitAll()
+                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/auth/signin").permitAll()
+                .requestMatchers("/api/test/**").permitAll()
+                .requestMatchers("/api/auth/register").permitAll()
+                .anyRequest().authenticated();
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+
+@Bean
+public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/api/Offre/**")
+                    .allowedOrigins("http://localhost:4200")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE","HEAD","OPTION")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
+            
+            registry.addMapping("/api/Candidature/**")
+                    .allowedOrigins("http://localhost:4200")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE","HEAD","OPTION")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
+                    
+        }
+    };
+}
+}
+
+// @Bean
+// public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+// http.cors().and().csrf().disable()
+//     .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//     .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
+//     .requestMatchers("/api/test/**").permitAll()
+//     .anyRequest().authenticated();
+//     http.authenticationProvider(authenticationProvider());
+//     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//     return http.build();
+//   }
+
+// @Bean
+// public WebMvcConfigurer corsConfigurer() {
+// return new WebMvcConfigurer() {
+//     @Override
+//     public void addCorsMappings(CorsRegistry registry) {
+//         registry.addMapping("/api/**")
+//             .allowedOrigins("http://localhost:4200")
+//             .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
+//             .allowedHeaders("*")
+//             .allowCredentials(true);
+//         }
+//     };
+// }
+// @Configuration
+// public class WebConfig implements WebMvcConfigurer {
+//     @Override
+//     public void addCorsMappings(CorsRegistry registry) {
+//         registry.addMapping("/**")
+//             .allowedOrigins("http://localhost:4200") 
+//             .allowCredentials(true)
+//             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS","HEAD", "OPTIONS")
+//             .allowedHeaders("*");
+//     }
+// }
+
+
+
+
+
 
 //	@Override
 //	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 //		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 //	}
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
-    }
-
 //	@Bean
 //	@Override
 //	public AuthenticationManager authenticationManagerBean() throws Exception {
 //		return super.authenticationManagerBean();
 //	}
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 //	@Override
 //	protected void configure(HttpSecurity http) throws Exception {
 //		http.cors().and().csrf().disable()
@@ -82,25 +159,76 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //
 //		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //	}
- @Bean
-public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/api/Offre/**")
-                    .allowedOrigins("http://localhost:4200")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
-                    .allowedHeaders("*")
-                    .allowCredentials(true);
+// @Bean
+//      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//          http.cors().and().csrf().disable()
+//                  .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//                  .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                  .authorizeRequests().requestMatchers("/api/**").permitAll()
+//                  .requestMatchers("/api/auth/signin").permitAll()
+//                  .requestMatchers("/api/**").permitAll()
+//                  .requestMatchers("/api/auth/signin").permitAll()
+//                  .requestMatchers("/api/test/**").permitAll()
+//                  .requestMatchers("/api/auth/register").permitAll()
+//                  .anyRequest().authenticated();
+
+//          http.authenticationProvider(authenticationProvider());
+
+//          http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+//          return http.build();
+//      }
+
+//  @Bean
+// public WebMvcConfigurer corsConfigurer() {
+//     return new WebMvcConfigurer() {
+//         @Override
+//         public void addCorsMappings(CorsRegistry registry) {
+//             registry.addMapping("/api/Offre/**")
+//                     .allowedOrigins("http://localhost:4200")
+//                     .allowedMethods("GET", "POST", "PUT", "DELETE","HEAD","OPTION")
+//                     .allowedHeaders("*")
+//                     .allowCredentials(true);
             
-            registry.addMapping("/api/Candidature/**")
-                    .allowedOrigins("http://localhost:4200")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
-                    .allowedHeaders("*")
-                    .allowCredentials(true);
-        }
-    };
-}
+//             registry.addMapping("/api/Candidature/**")
+//                     .allowedOrigins("http://localhost:4200")
+//                     .allowedMethods("GET", "POST", "PUT", "DELETE","HEAD","OPTION")
+//                     .allowedHeaders("*")
+//                     .allowCredentials(true);
+                    
+//         }
+//     };
+// }
+
+// @Configuration
+// public class WebConfig implements WebMvcConfigurer {
+//     @Override
+//     public void addCorsMappings(CorsRegistry registry) {
+//         registry.addMapping("/**")
+//             .allowedOrigins("http://localhost:4200") // Replace with your frontend URL
+//             .allowCredentials(true)
+//             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS","HEAD", "OPTIONS")
+//             .allowedHeaders("*");
+//     }
+// }
+
+
+
+
+// @Bean
+//     public org.springframework.web.servlet.config.annotation.WebMvcConfigurer corsConfigurer() {
+//         return new org.springframework.web.servlet.config.annotation.WebMvcConfigurer() {
+//             @Override
+//             public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+//                 registry.addMapping("/api/**")
+//                         .allowedOrigins("http://localhost:4200")
+//                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                         .allowedHeaders("*")
+//                         .allowCredentials(true);
+//             }
+//         };
+//     }
+
 
 
 //@Bean
@@ -120,23 +248,23 @@ public WebMvcConfigurer corsConfigurer() {
 //    }
 
 
-     @Bean
-     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-         http.cors().and().csrf().disable()
-                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                 .authorizeRequests().requestMatchers("/api/**").permitAll()
-                 .requestMatchers("/api/auth/signin").permitAll()
-                 .requestMatchers("/api/**").permitAll()
-                 .requestMatchers("/api/auth/signin").permitAll()
-                 .requestMatchers("/api/test/**").permitAll()
-                 .requestMatchers("/api/auth/register").permitAll()
-                 .anyRequest().authenticated();
+     
 
-         http.authenticationProvider(authenticationProvider());
+//   @Bean
+// public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//     http.cors().and().csrf().disable()
+//         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//         .authorizeRequests()
+//             .requestMatchers("/api/auth/**", "/api/test/**").permitAll() // Updated
+//             .anyRequest().authenticated();
 
-         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//     http.authenticationProvider(authenticationProvider());
+//     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-         return http.build();
-     }
-}
+//     return http.build();
+// }
+
+
+    
+// }
