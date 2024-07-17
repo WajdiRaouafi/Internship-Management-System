@@ -78,14 +78,15 @@ pipeline {
         }
         stage('Frontend - Build Docker Image') {
             steps {
-                // Build frontend Docker image
+            // Build frontend Docker image
                 script {
-                    dir('Frontend') {
-                        sh "docker build -t ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG} -f ../docker/frontend/Dockerfile ."
+                dir('docker/frontend') {
+                    sh "docker build -t ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG} -f Dockerfile ."
                     }
                 }
             }
         }
+
         stage('Frontend - Push Docker Image') {
             steps {
                 // Push frontend Docker image to registry
