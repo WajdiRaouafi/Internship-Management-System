@@ -14,7 +14,7 @@ services:
       - ims-network2
 
   app:
-    image: backend/ims:latest
+    image: wajdiraouafi/backend-ims
     container_name: internship_management_app
     ports:
       - "8085:8085"
@@ -36,7 +36,7 @@ services:
       - ims-network2
     
   frontend:
-    image: frontend/ims:latest
+    image: wajdiraouafi/frontend-ims
     container_name: internship_management_frontend
     ports:
       - "4200:4200"
