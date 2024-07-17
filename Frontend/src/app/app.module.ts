@@ -21,6 +21,7 @@ import { CandidatureListComponent } from './candidature/candidature-list/candida
 import { CandidatureUpdateComponent } from './candidature/candidature-update/candidature-update.component';
 import { ToastComponent } from './toast/toast.component';
 import { ShowCandidatComponent } from './offres/show-candidat/show-candidat.component';
+import { AuthGuard } from './auth.guard';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -59,7 +60,13 @@ export function tokenGetter() {
   ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

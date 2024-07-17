@@ -12,6 +12,7 @@ import { CandidatureListComponent } from './candidature/candidature-list/candida
 import { CandidatureDetailComponent } from './candidature/candidature-detail/candidature-detail.component';
 import { CandidatureCreateComponent } from './candidature/candidature-create/candidature-create.component';
 import { ShowCandidatComponent } from './offres/show-candidat/show-candidat.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,14 +20,14 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/offres', pathMatch: 'full' },
   { path: 'offres', component: OffresListComponent },
-  { path: 'offre/:id', component: OffreDetailComponent },
-  { path: 'create-offre', component: OffreCreateComponent },
-  { path: 'update-offre/:id', component: OffreUpdateComponent },
-  { path: 'show-candidat/:id', component: ShowCandidatComponent },
-  { path: 'candidatures', component: CandidatureListComponent },
-  { path: 'candidature/:id', component: CandidatureDetailComponent },
-  { path: 'create-candidature', component: CandidatureCreateComponent },
-  { path: 'update-candidature/:id', component: CandidatureUpdateComponent },
+  { path: 'offre/:id', component: OffreDetailComponent,canActivate: [AuthGuard] },
+  { path: 'create-offre', component: OffreCreateComponent,canActivate: [AuthGuard] },
+  { path: 'update-offre/:id', component: OffreUpdateComponent,canActivate: [AuthGuard] },
+  { path: 'show-candidat/:id', component: ShowCandidatComponent,canActivate: [AuthGuard] },
+  { path: 'candidatures', component: CandidatureListComponent ,canActivate: [AuthGuard]},
+  { path: 'candidature/:id', component: CandidatureDetailComponent ,canActivate: [AuthGuard]},
+  { path: 'create-candidature', component: CandidatureCreateComponent ,canActivate: [AuthGuard]},
+  { path: 'update-candidature/:id', component: CandidatureUpdateComponent ,canActivate: [AuthGuard]},
 ];
 
 @NgModule({
