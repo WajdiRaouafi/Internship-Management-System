@@ -47,8 +47,8 @@ pipeline {
             steps {
                 // Build Docker image
                 script {
-                    dir('docker/backend') {
-                    sh "docker build -t ${DOCKER_IMAGE_BACKEND}:${DOCKER_TAG} -f Dockerfile ."
+                    dir('') {
+                    sh "docker build -t ${DOCKER_IMAGE_BACKEND}:${DOCKER_TAG} -f docker/backend/Dockerfile ."
                     }
                 }
             }
