@@ -17,6 +17,7 @@ pipeline {
     tools {
         jdk 'OpenJDK17'
         maven 'Maven3'
+        nodejs 'NodeJS20'
     }
 
     stages {
