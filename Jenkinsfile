@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = 'https://index.docker.io/v1/'
-        DOCKER_IMAGE_BACKEND = 'backend/ims'
-        DOCKER_IMAGE_FRONTEND = 'frontend/ims'
+        DOCKER_IMAGE_BACKEND = 'backend-ims'
+        DOCKER_IMAGE_FRONTEND = 'frontend-ims'
         // DOCKER_IMAGE = 'wajdiraouafi/ims'
         DOCKER_TAG = 'latest' // You can change this to your desired tag
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // The ID of your Docker credentials in Jenkins
