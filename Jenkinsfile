@@ -80,8 +80,8 @@ pipeline {
             steps {
             // Build frontend Docker image
                 script {
-                dir('docker/frontend') {
-                    sh "docker build -t ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG} -f Dockerfile ."
+                    dir('docker/frontend') {
+                        sh "docker build -t ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG} -f Dockerfile ../.."
                     }
                 }
             }

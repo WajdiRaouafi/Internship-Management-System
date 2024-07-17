@@ -12,7 +12,7 @@ RUN npm install -g @angular/cli
 RUN npm install
 
 # Copy the rest of the Frontend files
-COPY ../../Frontend .
+COPY ../../Frontend/. .
 
 # Command to run the application
 CMD ["ng", "serve", "--host", "0.0.0.0"]
