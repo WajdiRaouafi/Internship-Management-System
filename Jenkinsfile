@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = 'https://index.docker.io/v1/'
-        DOCKER_IMAGE = 'wajdiraouafi/ims'
+        DOCKER_IMAGE_BACKEND = 'backend/ims:latest'
+        DOCKER_IMAGE_FRONTEND = 'frontend/ims:latest'
+        // DOCKER_IMAGE = 'wajdiraouafi/ims'
         DOCKER_TAG = 'latest' // You can change this to your desired tag
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // The ID of your Docker credentials in Jenkins
         DB_HOST = 'mysql' // DATABASE10
@@ -24,12 +26,15 @@ pipeline {
         //     }
         // }
 
-        stage('Build') {
+        stage('Backend - Build') {
             steps {
                 // Build the project using Maven
+                dir(''){
                 sh 'mvn clean package -DskipTests'
+                }
             }
         }
+        
 
         // stage('Test') {
         //     steps {
@@ -38,37 +43,72 @@ pipeline {
         //     }
         // }
 
-        stage('Build Docker Image') {
+        stage('Backend - Build Docker Image') {
             steps {
                 // Build Docker image
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f docker/backend/Dockerfile ."
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                // Push Docker image to registry
-                script {
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "echo \$DOCKER_PASSWORD | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USERNAME --password-stdin"
-                        sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    dir('docker/backend') {
+                    sh "docker build -t ${DOCKER_IMAGE_BACKEND}:${DOCKER_TAG} -f Dockerfile ."
                     }
                 }
             }
         }
 
+        stage('Backend - Push Docker Image') {
+            steps {
+                // Push Docker image to registry
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USERNAME --password-stdin"
+                        sh "docker push ${DOCKER_IMAGE_BACKEND}:${DOCKER_TAG}"
+                    }
+                }
+            }
+        }
+
+        stage('Frontend - Build') {
+            steps {
+                // Build the frontend project using npm
+                dir('Frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('Frontend - Build Docker Image') {
+            steps {
+                // Build frontend Docker image
+                script {
+                    dir('docker/frontend') {
+                        sh "docker build -t ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG} -f Dockerfile ."
+                    }
+                }
+            }
+        }
+        stage('Frontend - Push Docker Image') {
+            steps {
+                // Push frontend Docker image to registry
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USERNAME --password-stdin"
+                        sh "docker push ${DOCKER_IMAGE_FRONTEND}:${DOCKER_TAG}"
+                    }
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 // Deploy the application using Docker Compose
                 script {
-                    sh 'docker-compose down'
-                    sh 'docker-compose up -d'
+                    dir('docker') {
+                        sh 'docker-compose down'
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
     }
+
 
     post {
         always {
