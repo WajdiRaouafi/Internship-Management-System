@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Candidature } from '../../models/candidature.model';
 import { catchError, map } from 'rxjs/operators';
-import { ToastService } from '../toast/toast.service';
+// import { ToastService } from '../toast/toast.service';
 import { ResponseMessage } from '../../models/ApiResponse.model';
 import { Offres } from '../../models/offres.model.ts';
 
@@ -13,7 +13,9 @@ import { Offres } from '../../models/offres.model.ts';
 export class CandidatureService {
   private baseUrl = 'http://localhost:8085/api/Candidature';
 
-  constructor(private http: HttpClient, private toastService: ToastService) {}
+  // constructor(private http: HttpClient, private toastService: ToastService) {}
+  constructor(private http: HttpClient) {}
+
 
   getCandidatureList(): Observable<Candidature[]> {
     return this.http.get<Candidature[]>(`${this.baseUrl}/all`);
@@ -27,7 +29,7 @@ export class CandidatureService {
     return this.http.post<ResponseMessage>(`${this.baseUrl}/save/${userId}/${offreId}`, candidature).pipe(
       catchError((error: HttpErrorResponse) => {
         const errorMessage = error.error?.message || 'Une erreur est survenue.';
-        this.toastService.show(errorMessage); // Show the error message in the toast
+        // this.toastService.show(errorMessage); // Show the error message in the toast
         return throwError({ message: errorMessage });
       })
     );
